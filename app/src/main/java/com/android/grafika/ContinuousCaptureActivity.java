@@ -508,9 +508,9 @@ public class ContinuousCaptureActivity extends Activity implements SurfaceHolder
             case 2:  GLES20.glClearColor(0.0f, 0.0f, 1.0f, 1.0f);   break;
         }
 
-        int xpos = (int) (width * ((frameNum % 100) / 100.0f));
+//        int xpos = (int) (width * ((frameNum % 100) / 100.0f));
         GLES20.glEnable(GLES20.GL_SCISSOR_TEST);
-        GLES20.glScissor(xpos, 0, width / 32, height / 32);
+        GLES20.glScissor(/* xpos */ width - width/3, height - height/3, width / 4, height / 4);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
         GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
     }

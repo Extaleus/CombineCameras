@@ -16,6 +16,9 @@
 
 package com.android.grafika;
 
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.opengl.EGL14;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
@@ -92,7 +95,7 @@ import javax.microedition.khronos.opengles.GL10;
  * it comes back we have to re-create the EGLContext used by the video encoder.  (And, no,
  * the "preserve EGLContext on pause" feature doesn't help.)
  * <p>
- * We could simplify this quite a bit by using TextureView instead of GLSurfaceView, but that
+ * We could simplify this quite a bit by using TextureView  instead of GLSurfaceView, but that
  * comes with a performance hit.  We could also have the renderer thread drive the video
  * encoder directly, allowing them to work from a single EGLContext, but it's useful to
  * decouple the operations, and it's generally unwise to perform disk I/O on the thread that
@@ -138,7 +141,7 @@ public class CameraCaptureActivity extends Activity
     static final int FILTER_EDGE_DETECT = 4;
     static final int FILTER_EMBOSS = 5;
 
-    private GLSurfaceView mGLView;
+    private GLSurfaceView mGLSurfaceView;
     private CameraSurfaceRenderer mRenderer;
     private Camera mCamera;
     private CameraHandler mCameraHandler;
@@ -175,11 +178,11 @@ public class CameraCaptureActivity extends Activity
 
         // Configure the GLSurfaceView.  This will start the Renderer thread, with an
         // appropriate EGL context.
-        mGLView = (GLSurfaceView) findViewById(R.id.cameraPreview_surfaceView);
-        mGLView.setEGLContextClientVersion(2);     // select GLES 2.0
+        mGLSurfaceView = (GLSurfaceView) findViewById(R.id.cameraPreview_surfaceView);
+        mGLSurfaceView.setEGLContextClientVersion(2);     // select GLES 2.0
         mRenderer = new CameraSurfaceRenderer(mCameraHandler, sVideoEncoder, outputFile);
-        mGLView.setRenderer(mRenderer);
-        mGLView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+        mGLSurfaceView.setRenderer(mRenderer);
+        mGLSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 
         Log.d(TAG, "onCreate complete: " + this);
     }
@@ -199,8 +202,8 @@ public class CameraCaptureActivity extends Activity
             PermissionHelper.requestCameraPermission(this, false);
         }
 
-        mGLView.onResume();
-        mGLView.queueEvent(new Runnable() {
+        mGLSurfaceView.onResume();
+        mGLSurfaceView.queueEvent(new Runnable() {
             @Override public void run() {
                 mRenderer.setCameraPreviewSize(mCameraPreviewWidth, mCameraPreviewHeight);
             }
@@ -213,13 +216,13 @@ public class CameraCaptureActivity extends Activity
         Log.d(TAG, "onPause -- releasing camera");
         super.onPause();
         releaseCamera();
-        mGLView.queueEvent(new Runnable() {
+        mGLSurfaceView.queueEvent(new Runnable() {
             @Override public void run() {
                 // Tell the renderer that it's about to be paused so it can clean up.
                 mRenderer.notifyPausing();
             }
         });
-        mGLView.onPause();
+        mGLSurfaceView.onPause();
         Log.d(TAG, "onPause complete");
     }
 
@@ -250,7 +253,7 @@ public class CameraCaptureActivity extends Activity
         final int filterNum = spinner.getSelectedItemPosition();
 
         Log.d(TAG, "onItemSelected: " + filterNum);
-        mGLView.queueEvent(new Runnable() {
+        mGLSurfaceView.queueEvent(new Runnable() {
             @Override public void run() {
                 // notify the renderer that we want to change the encoder's state
                 mRenderer.changeFilterMode(filterNum);
@@ -350,7 +353,7 @@ public class CameraCaptureActivity extends Activity
      */
     public void clickToggleRecording(@SuppressWarnings("unused") View unused) {
         mRecordingEnabled = !mRecordingEnabled;
-        mGLView.queueEvent(new Runnable() {
+        mGLSurfaceView.queueEvent(new Runnable() {
             @Override public void run() {
                 // notify the renderer that we want to change the encoder's state
                 mRenderer.changeRecordingState(mRecordingEnabled);
@@ -408,7 +411,7 @@ public class CameraCaptureActivity extends Activity
         // the main UI thread.  Fortunately, requestRender() can be called from any thread,
         // so it doesn't really matter.
         if (VERBOSE) Log.d(TAG, "ST onFrameAvailable");
-        mGLView.requestRender();
+        mGLSurfaceView.requestRender();
     }
 
     /**
@@ -572,6 +575,7 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
                 // (In a previous version the TEXTURE_EXT_BW variant was enabled by a flag called
                 // ROSE_COLORED_GLASSES, because the shader set the red channel to the B&W color
                 // and green/blue to zero.)
+
                 programType = Texture2dProgram.ProgramType.TEXTURE_EXT_BW;
                 break;
             case CameraCaptureActivity.FILTER_BLUR:
@@ -598,7 +602,7 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
             case CameraCaptureActivity.FILTER_EMBOSS:
                 programType = Texture2dProgram.ProgramType.TEXTURE_EXT_FILT;
                 kernel = new float[] {
-                        2f, 0f, 0f,
+                        -1f, 2f, 0f,
                         0f, -1f, 0f,
                         0f, 0f, -1f };
                 colorAdj = 0.5f;
