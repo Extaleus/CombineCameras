@@ -65,10 +65,10 @@ public class Texture2dProgram {
             "void main()" +
             "{" +
             "if (vTextureCoord.x < 0.5 && vTextureCoord.y > 0.5) {" +
-//            "gl_FragColor = texture2D(sTexture2, vTextureCoord);" +
-            "vec4 tc = texture2D(sTexture2, vTextureCoord);\n" +
-            "float color = tc.r * 0.7 + tc.g * 0.7 + tc.b * 0.11;\n" +
-            "gl_FragColor = vec4(color, color, color, 1.0);\n" +
+            "gl_FragColor = texture2D(sTexture2, vTextureCoord);" +
+//            "vec4 tc = texture2D(sTexture2, vTextureCoord);\n" +
+//            "float color = tc.r * 0.7 + tc.g * 0.7 + tc.b * 0.11;\n" +
+//            "gl_FragColor = vec4(color, color, color, 1.0);\n" +
             "} else {" +
             "gl_FragColor = texture2D(sTexture, vTextureCoord);" +
             "}" +
@@ -316,10 +316,13 @@ public class Texture2dProgram {
      *                        for use with SurfaceTexture.)
      * @param texBuffer       Buffer with vertex texture data.
      * @param texStride       Width, in bytes, of the texture data for each vertex.
+     * @param textureId2
      */
+
+    // СЮДА ВЕРНУТЬСЯ
     public void draw(float[] mvpMatrix, FloatBuffer vertexBuffer, int firstVertex,
                      int vertexCount, int coordsPerVertex, int vertexStride,
-                     float[] texMatrix, FloatBuffer texBuffer, int textureId, int texStride) {
+                     float[] texMatrix, FloatBuffer texBuffer, int textureId, int texStride, int textureId2) {
         GlUtil.checkGlError("draw start");
 
         // Select the program.
@@ -329,6 +332,10 @@ public class Texture2dProgram {
         // Set the texture.
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
         GLES20.glBindTexture(mTextureTarget, textureId);
+
+        // ?
+        GLES20.glActiveTexture(GLES20.GL_TEXTURE1);
+        GLES20.glBindTexture(mTextureTarget, textureId2);
 
         // Copy the model / view / projection matrix over.
         GLES20.glUniformMatrix4fv(muMVPMatrixLoc, 1, false, mvpMatrix, 0);

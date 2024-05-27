@@ -19,9 +19,11 @@ package com.android.grafika;
 import android.graphics.SurfaceTexture;
 import android.opengl.EGLContext;
 import android.opengl.GLES20;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.android.grafika.gles.EglCore;
@@ -265,6 +267,7 @@ public class TextureMovieEncoder implements Runnable {
             mWeakEncoder = new WeakReference<TextureMovieEncoder>(encoder);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
         @Override  // runs on encoder thread
         public void handleMessage(Message inputMessage) {
             int what = inputMessage.what;
@@ -325,7 +328,9 @@ public class TextureMovieEncoder implements Runnable {
     private void handleFrameAvailable(float[] transform, long timestampNanos) {
         if (VERBOSE) Log.d(TAG, "handleFrameAvailable tr=" + transform);
         mVideoEncoder.drainEncoder(false);
-        mFullScreen.drawFrame(mTextureId, transform);
+
+        // ?
+        mFullScreen.drawFrame(mTextureId, 1, transform);
 
         drawBox(mFrameNum++);
 

@@ -478,7 +478,7 @@ public class ContinuousCaptureActivity extends Activity implements SurfaceHolder
         int viewWidth = sv.getWidth();
         int viewHeight = sv.getHeight();
         GLES20.glViewport(0, 0, viewWidth, viewHeight);
-        mFullFrameBlit.drawFrame(mTextureId, mTmpMatrix);
+//        mFullFrameBlit.drawFrame(mTextureId, mTmpMatrix);
         drawExtra(mFrameNum, viewWidth, viewHeight);
         mDisplaySurface.swapBuffers();
 
@@ -486,7 +486,7 @@ public class ContinuousCaptureActivity extends Activity implements SurfaceHolder
         if (!mFileSaveInProgress) {
             mEncoderSurface.makeCurrent();
             GLES20.glViewport(0, 0, VIDEO_WIDTH, VIDEO_HEIGHT);
-            mFullFrameBlit.drawFrame(mTextureId, mTmpMatrix);
+//            mFullFrameBlit.drawFrame(mTextureId, mTmpMatrix);
             drawExtra(mFrameNum, VIDEO_WIDTH, VIDEO_HEIGHT);
             mCircEncoder.frameAvailableSoon();
             mEncoderSurface.setPresentationTime(mCameraTexture.getTimestamp());

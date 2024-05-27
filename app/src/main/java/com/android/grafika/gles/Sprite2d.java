@@ -17,7 +17,6 @@
 package com.android.grafika.gles;
 
 import android.opengl.Matrix;
-import android.util.Log;
 
 /**
  * Base class for a 2d object.  Includes position, scale, rotation, and flat-shaded color.
@@ -190,7 +189,7 @@ public class Sprite2d {
         program.draw(mScratchMatrix, mDrawable.getVertexArray(), 0,
                 mDrawable.getVertexCount(), mDrawable.getCoordsPerVertex(),
                 mDrawable.getVertexStride(), GlUtil.IDENTITY_MATRIX, mDrawable.getTexCoordArray(),
-                mTextureId, mDrawable.getTexCoordStride());
+                mTextureId, mDrawable.getTexCoordStride(), textureId2);
     }
 
     @Override
