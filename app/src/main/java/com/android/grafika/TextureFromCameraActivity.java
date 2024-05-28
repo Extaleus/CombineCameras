@@ -35,7 +35,7 @@
 //
 //import com.android.grafika.combine.CameraUtils;
 //import com.android.grafika.combine.MainActivity;
-//import com.android.grafika.combine.PermissionHelper;
+//import com.android.grafika.PermissionHelper;
 //import com.android.grafika.combine.gles.Drawable2d;
 //import com.android.grafika.combine.gles.EglCore;
 //import com.android.grafika.combine.gles.GlUtil;

@@ -16,6 +16,9 @@
 
 package com.android.grafika.combine.gles;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+
 /**
  * This class essentially represents a viewport-sized sprite that will be rendered with
  * a texture, usually from an external source like the camera or video decoder.
@@ -58,26 +61,27 @@ public class FullFrameRect {
         return mProgram;
     }
 
-    /**
-     * Changes the program.  The previous program will be released.
-     * <p>
-     * The appropriate EGL context must be current.
-     */
-    public void changeProgram(Texture2dProgram program) {
-        mProgram.release();
-        mProgram = program;
-    }
+//    /**
+//     * Changes the program.  The previous program will be released.
+//     * <p>
+//     * The appropriate EGL context must be current.
+//     */
+//    public void changeProgram(Texture2dProgram program) {
+//        mProgram.release();
+//        mProgram = program;
+//    }
 
     /**
      * Creates a texture object suitable for use with drawFrame().
      */
+    @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
     public int createTextureObject() {
         return mProgram.createTextureObject();
     }
 
-    /**
-     * Draws a viewport-filling rect, texturing it with the specified texture object.
-     */
+//    /**
+//     * Draws a viewport-filling rect, texturing it with the specified texture object.
+//     */
 //    public void drawFrame(int textureId, float[] texMatrix) {
 //        // Use the identity matrix for MVP so our 2x2 FULL_RECTANGLE covers the viewport.
 //        mProgram.draw(GlUtil.IDENTITY_MATRIX, mRectDrawable.getVertexArray(), 0,

@@ -40,8 +40,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.android.grafika.combine.PermissionHelper;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;

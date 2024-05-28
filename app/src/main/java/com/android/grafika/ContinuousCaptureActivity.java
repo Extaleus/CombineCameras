@@ -38,7 +38,6 @@ import android.app.Activity;
 import com.android.grafika.combine.AspectFrameLayout;
 import com.android.grafika.combine.CameraUtils;
 import com.android.grafika.combine.MainActivity;
-import com.android.grafika.combine.PermissionHelper;
 import com.android.grafika.combine.gles.EglCore;
 import com.android.grafika.combine.gles.FullFrameRect;
 import com.android.grafika.combine.gles.Texture2dProgram;

@@ -133,7 +133,7 @@ public class CameraCaptureActivity extends AppCompatActivity
 
     private static final boolean VERBOSE = false;
 
-    static final int FILTER_NONE = 0;
+//    static final int FILTER_NONE = 0;
 
     private GLSurfaceView mGLSurfaceView;
     private CameraSurfaceRenderer mRenderer;
@@ -525,10 +525,9 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
     private int mIncomingHeight;
 
     // текущий фильтр, применяемый к кадрам.
-    private int mCurrentFilter;
+//    private int mCurrentFilter;
     // новый фильтр, который будет применен к кадрам.
-    private final int mNewFilter;
-
+//    private final int mNewFilter;
 
     /**
      * Constructs CameraSurfaceRenderer.
@@ -545,6 +544,8 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
         mOutputFile = outputFile;
 
         mTextureId = -1;
+        // ?
+        mAdditionalTextureId = -1;
 
         mRecordingStatus = -1;
         mRecordingEnabled = false;
@@ -554,8 +555,8 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
         mIncomingWidth = mIncomingHeight = -1;
 
         // We could preserve the old filter mode, but currently not bothering.
-        mCurrentFilter = -1;
-        mNewFilter = CameraCaptureActivity.FILTER_NONE;
+//        mCurrentFilter = -1;
+//        mNewFilter = CameraCaptureActivity.FILTER_NONE;
     }
 
     /**
@@ -594,75 +595,72 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
 //        mNewFilter = filter;
 //    }
 
-    /**
-     * Updates the filter program.
-     */
     // обновляет программу фильтра.
-    public void updateFilter() {
-        Texture2dProgram.ProgramType programType;
-        float[] kernel = null;
-        float colorAdj = 0.0f;
-
-        Log.d(TAG, "Updating filter to " + mNewFilter);
-        if (mNewFilter == CameraCaptureActivity.FILTER_NONE) {
-            programType = Texture2dProgram.ProgramType.TEXTURE_EXT;
-            /*
-            case CameraCaptureActivity.FILTER_BLACK_WHITE:
-                // (In a previous version the TEXTURE_EXT_BW variant was enabled by a flag called
-                // ROSE_COLORED_GLASSES, because the shader set the red channel to the B&W color
-                // and green/blue to zero.)
-
-                programType = Texture2dProgram.ProgramType.TEXTURE_EXT_BW;
-                break;
-            case CameraCaptureActivity.FILTER_BLUR:
-                programType = Texture2dProgram.ProgramType.TEXTURE_EXT_FILT;
-                kernel = new float[]{
-                        1f / 16f, 2f / 16f, 1f / 16f,
-                        2f / 16f, 4f / 16f, 2f / 16f,
-                        1f / 16f, 2f / 16f, 1f / 16f};
-                break;
-            case CameraCaptureActivity.FILTER_SHARPEN:
-                programType = Texture2dProgram.ProgramType.TEXTURE_EXT_FILT;
-                kernel = new float[]{
-                        0f, -1f, 0f,
-                        -1f, 5f, -1f,
-                        0f, -1f, 0f};
-                break;
-            case CameraCaptureActivity.FILTER_EDGE_DETECT:
-                programType = Texture2dProgram.ProgramType.TEXTURE_EXT_FILT;
-                kernel = new float[]{
-                        -1f, -1f, -1f,
-                        -1f, 8f, -1f,
-                        -1f, -1f, -1f};
-                break;
-            case CameraCaptureActivity.FILTER_EMBOSS:
-                programType = Texture2dProgram.ProgramType.TEXTURE_EXT_FILT;
-                kernel = new float[]{
-                        -1f, 2f, 0f,
-                        0f, -1f, 0f,
-                        0f, 0f, -1f};
-                colorAdj = 0.5f;
-                break;
-*/
-        } else {
-            throw new RuntimeException("Unknown filter mode " + mNewFilter);
-        }
-
-        // Do we need a whole new program?  (We want to avoid doing this if we don't have
-        // too -- compiling a program could be expensive.)
-        if (programType != mFullScreen.getProgram().getProgramType()) {
-            mFullScreen.changeProgram(new Texture2dProgram(programType));
-            // If we created a new program, we need to initialize the texture width/height.
-            mIncomingSizeUpdated = true;
-        }
-
-        // Update the filter kernel (if any).
-        if (kernel != null) {
-            mFullScreen.getProgram().setKernel(kernel, colorAdj);
-        }
-
-        mCurrentFilter = mNewFilter;
-    }
+//    public void updateFilter() {
+//        Texture2dProgram.ProgramType programType;
+//        float[] kernel = null;
+//        float colorAdj = 0.0f;
+//
+//        Log.d(TAG, "Updating filter to " + mNewFilter);
+//        if (mNewFilter == CameraCaptureActivity.FILTER_NONE) {
+//            programType = Texture2dProgram.ProgramType.TEXTURE_EXT;
+//            /*
+//            case CameraCaptureActivity.FILTER_BLACK_WHITE:
+//                // (In a previous version the TEXTURE_EXT_BW variant was enabled by a flag called
+//                // ROSE_COLORED_GLASSES, because the shader set the red channel to the B&W color
+//                // and green/blue to zero.)
+//
+//                programType = Texture2dProgram.ProgramType.TEXTURE_EXT_BW;
+//                break;
+//            case CameraCaptureActivity.FILTER_BLUR:
+//                programType = Texture2dProgram.ProgramType.TEXTURE_EXT_FILT;
+//                kernel = new float[]{
+//                        1f / 16f, 2f / 16f, 1f / 16f,
+//                        2f / 16f, 4f / 16f, 2f / 16f,
+//                        1f / 16f, 2f / 16f, 1f / 16f};
+//                break;
+//            case CameraCaptureActivity.FILTER_SHARPEN:
+//                programType = Texture2dProgram.ProgramType.TEXTURE_EXT_FILT;
+//                kernel = new float[]{
+//                        0f, -1f, 0f,
+//                        -1f, 5f, -1f,
+//                        0f, -1f, 0f};
+//                break;
+//            case CameraCaptureActivity.FILTER_EDGE_DETECT:
+//                programType = Texture2dProgram.ProgramType.TEXTURE_EXT_FILT;
+//                kernel = new float[]{
+//                        -1f, -1f, -1f,
+//                        -1f, 8f, -1f,
+//                        -1f, -1f, -1f};
+//                break;
+//            case CameraCaptureActivity.FILTER_EMBOSS:
+//                programType = Texture2dProgram.ProgramType.TEXTURE_EXT_FILT;
+//                kernel = new float[]{
+//                        -1f, 2f, 0f,
+//                        0f, -1f, 0f,
+//                        0f, 0f, -1f};
+//                colorAdj = 0.5f;
+//                break;
+//*/
+//        } else {
+//            throw new RuntimeException("Unknown filter mode " + mNewFilter);
+//        }
+//
+//        // Do we need a whole new program?  (We want to avoid doing this if we don't have
+//        // too -- compiling a program could be expensive.)
+//        if (programType != mFullScreen.getProgram().getProgramType()) {
+//            mFullScreen.changeProgram(new Texture2dProgram(programType));
+//            // If we created a new program, we need to initialize the texture width/height.
+//            mIncomingSizeUpdated = true;
+//        }
+//
+//        // Update the filter kernel (if any).
+//        if (kernel != null) {
+//            mFullScreen.getProgram().setKernel(kernel, colorAdj);
+//        }
+//
+//        mCurrentFilter = mNewFilter;
+//    }
 
     /**
      * Records the size of the incoming camera preview frames.
@@ -680,6 +678,7 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
     }
 
     // вызывается при создании поверхности OpenGL.
+    @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         Log.d(TAG, "onSurfaceCreated");
@@ -707,12 +706,13 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
         mSurfaceTexture = new SurfaceTexture(mTextureId);
 
         // ?
-        // mAdditionalTextureId = mFullScreen.createTextureObject();
+        mAdditionalTextureId = mFullScreen.createTextureObject();
         mAdditionalSurfaceTexture = new SurfaceTexture(mAdditionalTextureId);
 
         // Tell the UI thread to enable the camera preview.
         mCameraHandler.sendMessage(mCameraHandler.obtainMessage(
-                CameraCaptureActivity.CameraHandler.MSG_SET_SURFACE_TEXTURE, mSurfaceTexture));
+                CameraCaptureActivity.CameraHandler.MSG_SET_SURFACE_TEXTURE, mSurfaceTexture)
+        );
         // ?
 //        mCameraHandler.sendMessage(mCameraHandler.obtainMessage(
 //                CameraCaptureActivity.CameraHandler.MSG_SET_SURFACE_TEXTURE, mAdditionalSurfaceTexture));
@@ -795,10 +795,12 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
             Log.i(TAG, "Drawing before incoming texture size set; skipping");
             return;
         }
+
         // Update the filter, if necessary.
-        if (mCurrentFilter != mNewFilter) {
-            updateFilter();
-        }
+//        if (mCurrentFilter != mNewFilter) {
+//            updateFilter();
+//        }
+
         if (mIncomingSizeUpdated) {
             mFullScreen.getProgram().setTexSize(mIncomingWidth, mIncomingHeight);
             mIncomingSizeUpdated = false;

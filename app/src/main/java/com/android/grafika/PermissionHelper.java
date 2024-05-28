@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika.combine;
+package com.android.grafika;
 
 
 import android.Manifest;
