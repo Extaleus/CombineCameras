@@ -21,6 +21,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import com.android.grafika.combine.MainActivity;
+import com.android.grafika.combine.VideoEncoderCore;
+
 import java.lang.ref.WeakReference;
 
 /**

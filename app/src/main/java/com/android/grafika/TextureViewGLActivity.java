@@ -17,7 +17,6 @@
 package com.android.grafika;
 
 import android.opengl.GLES20;
-import android.opengl.GLES30;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.TextureView;
@@ -26,8 +25,9 @@ import android.widget.Button;
 import android.app.Activity;
 import android.graphics.SurfaceTexture;
 
-import com.android.grafika.gles.EglCore;
-import com.android.grafika.gles.WindowSurface;
+import com.android.grafika.combine.MainActivity;
+import com.android.grafika.combine.gles.EglCore;
+import com.android.grafika.combine.gles.WindowSurface;
 
 /**
  * Simple demonstration of using GLES to draw on a TextureView.

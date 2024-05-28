@@ -25,7 +25,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.app.Activity;
 
-import com.android.grafika.gles.EglCore;
+import com.android.grafika.combine.MainActivity;
+import com.android.grafika.combine.gles.EglCore;
 import com.android.grafika.gles.OffscreenSurface;
 
 import java.io.File;

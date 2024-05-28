@@ -30,8 +30,13 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.app.Activity;
 
-import com.android.grafika.gles.EglCore;
-import com.android.grafika.gles.WindowSurface;
+import com.android.grafika.combine.AspectFrameLayout;
+import com.android.grafika.combine.MainActivity;
+import com.android.grafika.combine.MiscUtils;
+import com.android.grafika.combine.MoviePlayer;
+import com.android.grafika.combine.SpeedControlCallback;
+import com.android.grafika.combine.gles.EglCore;
+import com.android.grafika.combine.gles.WindowSurface;
 
 import java.io.File;
 import java.io.IOException;

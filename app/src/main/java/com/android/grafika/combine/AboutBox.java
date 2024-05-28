@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.combine;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -25,6 +25,9 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.util.Log;
 import android.view.InflateException;
 import android.view.View;
+
+import com.android.grafika.R;
+import com.android.grafika.combine.MainActivity;
 
 /**
  * Creates and displays an "about" box.

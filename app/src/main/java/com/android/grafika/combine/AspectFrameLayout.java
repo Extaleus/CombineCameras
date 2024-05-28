@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.combine;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+
+import com.android.grafika.combine.MainActivity;
 
 /**
  * Layout that adjusts to maintain a specific aspect ratio.

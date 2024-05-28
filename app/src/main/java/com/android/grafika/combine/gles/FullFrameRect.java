@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika.gles;
+package com.android.grafika.combine.gles;
 
 /**
  * This class essentially represents a viewport-sized sprite that will be rendered with

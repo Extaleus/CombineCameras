@@ -16,6 +16,9 @@
 
 package com.android.grafika.gles;
 
+import com.android.grafika.combine.gles.EglCore;
+import com.android.grafika.combine.gles.EglSurfaceBase;
+
 /**
  * Off-screen EGL surface (pbuffer).
  * <p>

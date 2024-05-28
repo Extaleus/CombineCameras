@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika.gles;
+package com.android.grafika.combine.gles;
 
 import android.graphics.SurfaceTexture;
 import android.opengl.EGL14;
@@ -25,6 +25,8 @@ import android.opengl.EGLExt;
 import android.opengl.EGLSurface;
 import android.util.Log;
 import android.view.Surface;
+
+import com.android.grafika.combine.gles.GlUtil;
 
 /**
  * Core EGL state (display, context, config).

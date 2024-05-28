@@ -19,6 +19,8 @@ package com.android.grafika;
 import android.media.MediaCodec;
 import android.util.Log;
 
+import com.android.grafika.combine.MainActivity;
+
 import java.nio.ByteBuffer;
 
 /**

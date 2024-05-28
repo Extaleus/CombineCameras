@@ -19,6 +19,8 @@ package com.android.grafika.gles;
 import android.opengl.GLES20;
 import android.util.Log;
 
+import com.android.grafika.combine.gles.GlUtil;
+
 import java.nio.FloatBuffer;
 
 /**

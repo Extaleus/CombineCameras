@@ -35,10 +35,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
 
-import com.android.grafika.gles.EglCore;
-import com.android.grafika.gles.FullFrameRect;
-import com.android.grafika.gles.Texture2dProgram;
-import com.android.grafika.gles.WindowSurface;
+import com.android.grafika.combine.AspectFrameLayout;
+import com.android.grafika.combine.CameraUtils;
+import com.android.grafika.combine.MainActivity;
+import com.android.grafika.combine.PermissionHelper;
+import com.android.grafika.combine.gles.EglCore;
+import com.android.grafika.combine.gles.FullFrameRect;
+import com.android.grafika.combine.gles.Texture2dProgram;
+import com.android.grafika.combine.gles.WindowSurface;
 
 import java.io.File;
 import java.io.IOException;

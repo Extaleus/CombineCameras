@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika.gles;
+package com.android.grafika.combine.gles;
 
 import android.graphics.SurfaceTexture;
 import android.view.Surface;

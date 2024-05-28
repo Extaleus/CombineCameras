@@ -35,9 +35,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-import com.android.grafika.gles.EglCore;
-import com.android.grafika.gles.GlUtil;
-import com.android.grafika.gles.WindowSurface;
+import com.android.grafika.combine.MainActivity;
+import com.android.grafika.combine.MiscUtils;
+import com.android.grafika.combine.gles.EglCore;
+import com.android.grafika.combine.gles.GlUtil;
+import com.android.grafika.combine.gles.WindowSurface;
 
 import java.lang.ref.WeakReference;
 

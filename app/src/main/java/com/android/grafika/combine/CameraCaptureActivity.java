@@ -14,14 +14,10 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.combine;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.opengl.EGL14;
@@ -31,24 +27,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.grafika.gles.FullFrameRect;
-import com.android.grafika.gles.GlUtil;
-import com.android.grafika.gles.Texture2dProgram;
+import com.android.grafika.R;
+import com.android.grafika.combine.gles.FullFrameRect;
+import com.android.grafika.combine.gles.Texture2dProgram;
 
 import java.io.File;
 import java.io.IOException;
@@ -131,18 +124,16 @@ import javax.microedition.khronos.opengles.GL10;
  * continues to generate preview frames while the Activity is paused.)  The video encoder object
  * is managed as a static property of the Activity.
  */
-public class CameraCaptureActivity extends Activity
-        implements SurfaceTexture.OnFrameAvailableListener, OnItemSelectedListener {
+public class CameraCaptureActivity extends AppCompatActivity
+        implements SurfaceTexture.OnFrameAvailableListener
+//        , OnItemSelectedListener
+        {
     private static final String TAG = MainActivity.TAG;
+
+
     private static final boolean VERBOSE = false;
 
-    // Camera filters; must match up with cameraFilterNames in strings.xml
     static final int FILTER_NONE = 0;
-    static final int FILTER_BLACK_WHITE = 1;
-    static final int FILTER_BLUR = 2;
-    static final int FILTER_SHARPEN = 3;
-    static final int FILTER_EDGE_DETECT = 4;
-    static final int FILTER_EMBOSS = 5;
 
     private GLSurfaceView mGLSurfaceView;
     private CameraSurfaceRenderer mRenderer;
@@ -153,24 +144,18 @@ public class CameraCaptureActivity extends Activity
     private int mCameraPreviewWidth, mCameraPreviewHeight;
 
     // this is static so it survives activity restarts
-    private static TextureMovieEncoder sVideoEncoder = new TextureMovieEncoder();
+    private static final TextureMovieEncoder sVideoEncoder = new TextureMovieEncoder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate started: " + this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera_capture);
 
         File outputFile = new File(getFilesDir(), "camera-test.mp4");
-        TextView fileText = (TextView) findViewById(R.id.cameraOutputFile_text);
+        TextView fileText = findViewById(R.id.cameraOutputFile_text);
         fileText.setText(outputFile.toString());
-
-        Spinner spinner = (Spinner) findViewById(R.id.cameraFilter_spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.cameraFilterNames, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner.
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(this);
 
         // Define a handler that receives camera-control messages from other threads.  All calls
         // to Camera must be made on the same thread.  Note we create this before the renderer
@@ -181,7 +166,7 @@ public class CameraCaptureActivity extends Activity
 
         // Configure the GLSurfaceView.  This will start the Renderer thread, with an
         // appropriate EGL context.
-        mGLSurfaceView = (GLSurfaceView) findViewById(R.id.cameraPreview_surfaceView);
+        mGLSurfaceView = findViewById(R.id.cameraPreview_surfaceView);
         mGLSurfaceView.setEGLContextClientVersion(2);     // select GLES 2.0
         mRenderer = new CameraSurfaceRenderer(mCameraHandler, sVideoEncoder, outputFile);
         mGLSurfaceView.setRenderer(mRenderer);
@@ -192,17 +177,17 @@ public class CameraCaptureActivity extends Activity
 
     @Override
     protected void onResume() {
-        Log.d(TAG, "onResume -- acquiring camera");
+        Log.d(TAG, "onResume started: " + this);
         super.onResume();
         updateControls();
 
-        if (PermissionHelper.hasCameraPermission(this)) {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             if (mCamera == null) {
                 openCamera(1280, 720);      // updates mCameraPreviewWidth/Height
+            }else{
+                Toast.makeText(this, "need camera permission", Toast.LENGTH_LONG).show();
+                finish();
             }
-
-        } else {
-            PermissionHelper.requestCameraPermission(this, false);
         }
 
         mGLSurfaceView.onResume();
@@ -212,14 +197,18 @@ public class CameraCaptureActivity extends Activity
                 mRenderer.setCameraPreviewSize(mCameraPreviewWidth, mCameraPreviewHeight);
             }
         });
+
         Log.d(TAG, "onResume complete: " + this);
     }
 
     @Override
     protected void onPause() {
-        Log.d(TAG, "onPause -- releasing camera");
+        Log.d(TAG, "onPause started: " + this);
         super.onPause();
+
+        Log.d(TAG, "onPause: Releasing camera");
         releaseCamera();
+
         mGLSurfaceView.queueEvent(new Runnable() {
             @Override
             public void run() {
@@ -228,7 +217,8 @@ public class CameraCaptureActivity extends Activity
             }
         });
         mGLSurfaceView.onPause();
-        Log.d(TAG, "onPause complete");
+
+        Log.d(TAG, "onPause complete: " + this);
     }
 
     @Override
@@ -238,20 +228,7 @@ public class CameraCaptureActivity extends Activity
         mCameraHandler.invalidateHandler();     // paranoia
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (!PermissionHelper.hasCameraPermission(this)) {
-            Toast.makeText(this,
-                    "Camera permission is needed to run this application", Toast.LENGTH_LONG).show();
-            PermissionHelper.launchPermissionSettings(this);
-            finish();
-        } else {
-            openCamera(1280, 720);      // updates mCameraPreviewWidth/Height
-
-        }
-    }
-
+/*
     // spinner selected
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -267,17 +244,19 @@ public class CameraCaptureActivity extends Activity
             }
         });
     }
-
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
     }
+*/
 
-    /**
+            /**
      * Opens a camera, and attempts to establish preview mode at the specified width and height.
      * <p>
      * Sets mCameraPreviewWidth and mCameraPreviewHeight to the actual width/height of the preview.
      */
     private void openCamera(int desiredWidth, int desiredHeight) {
+        Log.d(TAG, "openCamera started: " + this);
+
         if (mCamera != null) {
             throw new RuntimeException("camera already initialized");
         }
@@ -303,6 +282,7 @@ public class CameraCaptureActivity extends Activity
 
         Camera.Parameters parms = mCamera.getParameters();
 
+        Log.d(TAG, "choosePreviewSize started: " + this);
         CameraUtils.choosePreviewSize(parms, desiredWidth, desiredHeight);
 
         // Give the camera a hint that we're recording video.  This can have a big
@@ -322,14 +302,13 @@ public class CameraCaptureActivity extends Activity
             previewFacts += " @[" + (fpsRange[0] / 1000.0) +
                     " - " + (fpsRange[1] / 1000.0) + "] fps";
         }
-        TextView text = (TextView) findViewById(R.id.cameraParams_text);
+        TextView text = findViewById(R.id.cameraParams_text);
         text.setText(previewFacts);
 
         mCameraPreviewWidth = mCameraPreviewSize.width;
         mCameraPreviewHeight = mCameraPreviewSize.height;
 
-
-        AspectFrameLayout layout = (AspectFrameLayout) findViewById(R.id.cameraPreview_afl);
+        AspectFrameLayout layout = findViewById(R.id.cameraPreview_afl);
 
         Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
 
@@ -343,6 +322,8 @@ public class CameraCaptureActivity extends Activity
             // Set the preview aspect ratio.
             layout.setAspectRatio((double) mCameraPreviewWidth / mCameraPreviewHeight);
         }
+
+        Log.d(TAG, "openCamera complete: " + this);
     }
 
     /**
@@ -353,7 +334,7 @@ public class CameraCaptureActivity extends Activity
             mCamera.stopPreview();
             mCamera.release();
             mCamera = null;
-            Log.d(TAG, "releaseCamera -- done");
+            Log.d(TAG, "releaseCamera done");
         }
     }
 
@@ -384,13 +365,10 @@ public class CameraCaptureActivity extends Activity
      * Updates the on-screen controls to reflect the current state of the app.
      */
     private void updateControls() {
-        Button toggleRelease = (Button) findViewById(R.id.toggleRecording_button);
+        Button toggleRelease = findViewById(R.id.toggleRecording_button);
         int id = mRecordingEnabled ?
                 R.string.toggleRecordingOff : R.string.toggleRecordingOn;
         toggleRelease.setText(id);
-
-        //CheckBox cb = (CheckBox) findViewById(R.id.rebindHack_checkbox);
-        //cb.setChecked(TextureRender.sWorkAroundContextProblem);
     }
 
     /**
@@ -408,18 +386,19 @@ public class CameraCaptureActivity extends Activity
 
     @Override
     public void onFrameAvailable(SurfaceTexture st) {
-        // The SurfaceTexture uses this to signal the availability of a new frame.  The
-        // thread that "owns" the external texture associated with the SurfaceTexture (which,
-        // by virtue of the context being shared, *should* be either one) needs to call
-        // updateTexImage() to latch the buffer.
-        //
-        // Once the buffer is latched, the GLSurfaceView thread can signal the encoder thread.
-        // This feels backward -- we want recording to be prioritized over rendering -- but
-        // since recording is only enabled some of the time it's easier to do it this way.
-        //
-        // Since GLSurfaceView doesn't establish a Looper, this will *probably* execute on
-        // the main UI thread.  Fortunately, requestRender() can be called from any thread,
-        // so it doesn't really matter.
+        /* The SurfaceTexture uses this to signal the availability of a new frame.  The
+         thread that "owns" the external texture associated with the SurfaceTexture (which,
+         by virtue of the context being shared, *should* be either one) needs to call
+         updateTexImage() to latch the buffer.
+
+         Once the buffer is latched, the GLSurfaceView thread can signal the encoder thread.
+         This feels backward -- we want recording to be prioritized over rendering -- but
+         since recording is only enabled some of the time it's easier to do it this way.
+
+         Since GLSurfaceView doesn't establish a Looper, this will *probably* execute on
+         the main UI thread.  Fortunately, requestRender() can be called from any thread,
+         so it doesn't really matter.
+        */
         if (VERBOSE) Log.d(TAG, "ST onFrameAvailable");
         mGLSurfaceView.requestRender();
     }
@@ -439,7 +418,7 @@ public class CameraCaptureActivity extends Activity
         // Weak reference to the Activity; only access this from the UI thread.
         // Слабая ссылка на активность CameraCaptureActivity,
         // которая используется для предотвращения утечек памяти.
-        private WeakReference<CameraCaptureActivity> mWeakActivity;
+        private final WeakReference<CameraCaptureActivity> mWeakActivity;
 
         // Конструктор класса, который принимает активность
         // CameraCaptureActivity и сохраняет на неё слабую ссылку.
@@ -470,50 +449,49 @@ public class CameraCaptureActivity extends Activity
                 return;
             }
 
-            switch (what) {
-                // Если тип сообщения MSG_SET_SURFACE_TEXTURE, вызывает метод handleSetSurfaceTexture()
-                // активности CameraCaptureActivity с текстурой поверхности из объекта Message.
-                case MSG_SET_SURFACE_TEXTURE:
-                    activity.handleSetSurfaceTexture((SurfaceTexture) inputMessage.obj);
-                    break;
-                default:
-                    throw new RuntimeException("unknown msg " + what);
+            // Если тип сообщения MSG_SET_SURFACE_TEXTURE, вызывает метод handleSetSurfaceTexture()
+            // активности CameraCaptureActivity с текстурой поверхности из объекта Message.
+            if (what == MSG_SET_SURFACE_TEXTURE) {
+                activity.handleSetSurfaceTexture((SurfaceTexture) inputMessage.obj);
+            } else {
+                throw new RuntimeException("unknown msg " + what);
             }
         }
     }
 }
 
-/**
- * Renderer object for our GLSurfaceView.
- * <p>
- * Do not call any methods here directly from another thread -- use the
- * GLSurfaceView#queueEvent() call.
+/*
+  Renderer object for our GLSurfaceView.
+  <p>
+  Do not call any methods here directly from another thread -- use the
+  GLSurfaceView#queueEvent() call.
  */
 
 // Класс CameraSurfaceRenderer реализует интерфейс GLSurfaceView.Renderer,
 // который используется для отрисовки графики на поверхности OpenGL.
 // Этот класс отвечает за отображение предварительного просмотра камеры и запись видео.
-/**Описание работы класса:
-*При создании поверхности OpenGL создается объект SurfaceTexture и передается в обработчик сообщений для установки в предварительный просмотр камеры.
-*При изменении размера поверхности OpenGL ничего не происходит.
-*При отрисовке кадра обновляется текстура SurfaceTexture, и в зависимости от состояния записи видео либо отображается на экране, либо передается кодеру видео.
-*Если включен фильтр, то он применяется к кадру перед отображением.
-*Если идет запись видео, то в углу экрана рисуется красный прямоугольник.
+
+/**
+ * Описание работы класса:
+ * При создании поверхности OpenGL создается объект SurfaceTexture и передается в обработчик сообщений для установки в предварительный просмотр камеры.
+ * При изменении размера поверхности OpenGL ничего не происходит.
+ * При отрисовке кадра обновляется текстура SurfaceTexture, и в зависимости от состояния записи видео либо отображается на экране, либо передается кодеру видео.
+ * Если включен фильтр, то он применяется к кадру перед отображением.
+ * Если идет запись видео, то в углу экрана рисуется красный прямоугольник.
  */
 class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
     private static final String TAG = MainActivity.TAG;
     private static final boolean VERBOSE = false;
-
     private static final int RECORDING_OFF = 0;
     private static final int RECORDING_ON = 1;
     private static final int RECORDING_RESUMED = 2;
 
     // Обработчик сообщений для взаимодействия с главным потоком.
-    private CameraCaptureActivity.CameraHandler mCameraHandler;
+    private final CameraCaptureActivity.CameraHandler mCameraHandler;
     // Объект для кодирования видео.
-    private TextureMovieEncoder mVideoEncoder;
+    private final TextureMovieEncoder mVideoEncoder;
     // Ыайл для сохранения закодированного видео.
-    private File mOutputFile;
+    private final File mOutputFile;
 
     // Объект для отрисовки полноэкранного прямоугольника.
     private FullFrameRect mFullScreen;
@@ -523,8 +501,6 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
     // Идентификатор текстуры.
     private int mTextureId;
 
-    // ?
-    private DualTextureFullFrameRect mDFullScreen;
     // ?
     private int mAdditionalTextureId;
     // ?
@@ -551,7 +527,7 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
     // текущий фильтр, применяемый к кадрам.
     private int mCurrentFilter;
     // новый фильтр, который будет применен к кадрам.
-    private int mNewFilter;
+    private final int mNewFilter;
 
 
     /**
@@ -610,13 +586,13 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
         mRecordingEnabled = isRecording;
     }
 
-    /**
-     * Changes the filter that we're applying to the camera preview.
+    /*
+      Changes the filter that we're applying to the camera preview.
      */
     // изменяет режим фильтра, применяемого к кадрам.
-    public void changeFilterMode(int filter) {
-        mNewFilter = filter;
-    }
+//    public void changeFilterMode(int filter) {
+//        mNewFilter = filter;
+//    }
 
     /**
      * Updates the filter program.
@@ -628,10 +604,9 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
         float colorAdj = 0.0f;
 
         Log.d(TAG, "Updating filter to " + mNewFilter);
-        switch (mNewFilter) {
-            case CameraCaptureActivity.FILTER_NONE:
-                programType = Texture2dProgram.ProgramType.TEXTURE_EXT;
-                break;
+        if (mNewFilter == CameraCaptureActivity.FILTER_NONE) {
+            programType = Texture2dProgram.ProgramType.TEXTURE_EXT;
+            /*
             case CameraCaptureActivity.FILTER_BLACK_WHITE:
                 // (In a previous version the TEXTURE_EXT_BW variant was enabled by a flag called
                 // ROSE_COLORED_GLASSES, because the shader set the red channel to the B&W color
@@ -668,8 +643,9 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
                         0f, 0f, -1f};
                 colorAdj = 0.5f;
                 break;
-            default:
-                throw new RuntimeException("Unknown filter mode " + mNewFilter);
+*/
+        } else {
+            throw new RuntimeException("Unknown filter mode " + mNewFilter);
         }
 
         // Do we need a whole new program?  (We want to avoid doing this if we don't have
@@ -735,11 +711,11 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
         mAdditionalSurfaceTexture = new SurfaceTexture(mAdditionalTextureId);
 
         // Tell the UI thread to enable the camera preview.
-//        mCameraHandler.sendMessage(mCameraHandler.obtainMessage(
-//                CameraCaptureActivity.CameraHandler.MSG_SET_SURFACE_TEXTURE, mSurfaceTexture));
-        // ?
         mCameraHandler.sendMessage(mCameraHandler.obtainMessage(
-                CameraCaptureActivity.CameraHandler.MSG_SET_SURFACE_TEXTURE, mAdditionalSurfaceTexture));
+                CameraCaptureActivity.CameraHandler.MSG_SET_SURFACE_TEXTURE, mSurfaceTexture));
+        // ?
+//        mCameraHandler.sendMessage(mCameraHandler.obtainMessage(
+//                CameraCaptureActivity.CameraHandler.MSG_SET_SURFACE_TEXTURE, mAdditionalSurfaceTexture));
     }
 
     // вызывается при изменении размера поверхности OpenGL.
@@ -858,4 +834,3 @@ class CameraSurfaceRenderer implements GLSurfaceView.Renderer {
         GLES20.glDisable(GLES20.GL_SCISSOR_TEST);
     }
 }
-

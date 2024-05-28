@@ -22,9 +22,9 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".CameraCaptureActivity" >
+    tools:context=".combine.CameraCaptureActivity" >
 
-    <com.android.grafika.AspectFrameLayout
+    <com.android.grafika.combine.AspectFrameLayout
         android:id="@+id/cameraPreview_afl"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,7 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center" />
-    </com.android.grafika.AspectFrameLayout>
+    </com.android.grafika.combine.AspectFrameLayout>
 
     <Button
         android:id="@+id/toggleRecording_button"
@@ -49,19 +49,16 @@
         android:text="@string/toggleRecordingOn"
         android:onClick="clickToggleRecording" />
 
-    <Spinner
-        android:id="@+id/cameraFilter_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true" />
-
     <!-- these overlap with the SurfaceView; by default, it's underneath the UI layer -->
 
     <TextView
         android:id="@+id/cameraParams_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/toggleRecording_button"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@+id/toggleRecording_button"
+        android:layout_toRightOf="@+id/toggleRecording_button"
         android:text="[?]"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 

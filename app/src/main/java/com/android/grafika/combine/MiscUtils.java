@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.combine;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
+
+import com.android.grafika.combine.MainActivity;
 
 import java.io.File;
 import java.io.FilenameFilter;

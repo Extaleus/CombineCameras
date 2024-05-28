@@ -27,6 +27,8 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 
+import com.android.grafika.combine.MainActivity;
+
 /**
  * Show color bars.
  */

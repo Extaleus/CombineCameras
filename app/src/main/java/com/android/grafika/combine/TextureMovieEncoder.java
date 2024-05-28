@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.combine;
 
 import android.graphics.SurfaceTexture;
 import android.opengl.EGLContext;
@@ -26,10 +26,10 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
-import com.android.grafika.gles.EglCore;
-import com.android.grafika.gles.FullFrameRect;
-import com.android.grafika.gles.Texture2dProgram;
-import com.android.grafika.gles.WindowSurface;
+import com.android.grafika.combine.gles.EglCore;
+import com.android.grafika.combine.gles.FullFrameRect;
+import com.android.grafika.combine.gles.Texture2dProgram;
+import com.android.grafika.combine.gles.WindowSurface;
 
 import java.io.File;
 import java.io.IOException;

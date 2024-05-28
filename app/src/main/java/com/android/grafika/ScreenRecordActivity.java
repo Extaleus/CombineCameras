@@ -40,6 +40,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.grafika.combine.PermissionHelper;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -171,7 +173,7 @@ public class ScreenRecordActivity extends PlayMovieSurfaceActivity {
   @Override
   protected void onResume() {
     super.onResume();
-    if (!PermissionHelper.hasWriteStoragePermission(this)) {
+    if (PermissionHelper.hasWriteStoragePermission(this)) {
       PermissionHelper.requestWriteStoragePermission(this);
     }
   }
@@ -179,7 +181,7 @@ public class ScreenRecordActivity extends PlayMovieSurfaceActivity {
   @Override
   public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    if (!PermissionHelper.hasWriteStoragePermission(this)) {
+    if (PermissionHelper.hasWriteStoragePermission(this)) {
       Toast.makeText(this,
               "Writing to external storage permission is needed to run this application", Toast.LENGTH_LONG).show();
       PermissionHelper.launchPermissionSettings(this);

@@ -18,6 +18,8 @@ package com.android.grafika.gles;
 
 import android.opengl.GLES20;
 
+import com.android.grafika.combine.gles.GlUtil;
+
 import java.nio.ByteBuffer;
 
 /**

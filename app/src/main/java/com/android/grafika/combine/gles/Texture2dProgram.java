@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika.gles;
+package com.android.grafika.combine.gles;
 
 import android.opengl.GLES11Ext;
 import android.opengl.GLES20;
@@ -31,16 +31,6 @@ public class Texture2dProgram {
     public enum ProgramType {
         TEXTURE_2D, TEXTURE_EXT, TEXTURE_EXT_BW, TEXTURE_EXT_FILT
     }
-
-//    private static final String VERTEX_SHADER_REPLACE =
-//            "attribute vec4 vPosition;" +
-//            "attribute vec2 inputTextureCoordinate;" +
-//            "varying vec2 textureCoordinate;" +
-//            "void main()" +
-//            "{" +
-//            "gl_Position = vPosition;" +
-//            "textureCoordinate = inputTextureCoordinate;" +
-//            "}";
 
     // Simple vertex shader, used for all programs.
     private static final String VERTEX_SHADER =

@@ -30,7 +30,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 
-import com.android.grafika.gles.EglCore;
+import com.android.grafika.combine.MainActivity;
+import com.android.grafika.combine.WorkDialog;
+import com.android.grafika.combine.gles.EglCore;
 import com.android.grafika.gles.OffscreenSurface;
 
 import java.io.File;

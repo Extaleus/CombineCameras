@@ -28,6 +28,9 @@ import android.view.TextureView;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.android.grafika.combine.MainActivity;
+import com.android.grafika.combine.PermissionHelper;
+
 import java.io.IOException;
 
 /**

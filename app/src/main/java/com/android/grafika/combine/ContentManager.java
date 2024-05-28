@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.combine;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -24,6 +24,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.android.grafika.R;
 
 import java.io.File;
 import java.util.ArrayList;

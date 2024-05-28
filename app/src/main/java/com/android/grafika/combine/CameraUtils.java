@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.combine;
 
 import android.hardware.Camera;
 import android.util.Log;
+
+import com.android.grafika.combine.MainActivity;
 
 import java.util.List;
 

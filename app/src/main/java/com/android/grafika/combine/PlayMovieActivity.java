@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.combine;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -30,6 +30,12 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
+
+import com.android.grafika.R;
+import com.android.grafika.combine.MainActivity;
+import com.android.grafika.combine.MiscUtils;
+import com.android.grafika.combine.MoviePlayer;
+import com.android.grafika.combine.SpeedControlCallback;
 
 import java.io.File;
 import java.io.IOException;

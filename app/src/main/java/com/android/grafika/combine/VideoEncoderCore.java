@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.combine;
 
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
@@ -22,6 +22,8 @@ import android.media.MediaFormat;
 import android.media.MediaMuxer;
 import android.util.Log;
 import android.view.Surface;
+
+import com.android.grafika.combine.MainActivity;
 
 import java.io.File;
 import java.io.IOException;
