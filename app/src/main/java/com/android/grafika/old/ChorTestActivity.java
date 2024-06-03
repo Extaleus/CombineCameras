@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.old;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +23,8 @@ import android.os.Message;
 import android.app.Activity;
 import android.util.Log;
 import android.view.Choreographer;
+
+import com.android.grafika.R;
 
 /**
  * Trivial activity used to test Choreographer behavior.

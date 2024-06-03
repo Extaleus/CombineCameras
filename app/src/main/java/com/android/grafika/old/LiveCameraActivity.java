@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.old;
 
 import android.app.Activity;
 import android.graphics.SurfaceTexture;

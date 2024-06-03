@@ -20,6 +20,8 @@ import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
 import android.media.MediaMuxer;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.Surface;
 
@@ -39,6 +41,7 @@ import java.nio.ByteBuffer;
  * This class is not thread-safe, with one exception: it is valid to use the input surface
  * on one thread, and drain the output on a different thread.
  */
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class VideoEncoderCore {
     private static final String TAG = MainActivity.TAG;
     private static final boolean VERBOSE = false;
@@ -59,6 +62,7 @@ public class VideoEncoderCore {
     /**
      * Configures encoder and muxer state, and prepares the input Surface.
      */
+
     public VideoEncoderCore(int width, int height, int bitRate, File outputFile)
             throws IOException {
         mBufferInfo = new MediaCodec.BufferInfo();

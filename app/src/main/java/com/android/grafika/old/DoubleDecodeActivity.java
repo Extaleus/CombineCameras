@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.old;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
 
+import com.android.grafika.R;
 import com.android.grafika.combine.ContentManager;
 import com.android.grafika.combine.MainActivity;
 import com.android.grafika.combine.MoviePlayer;

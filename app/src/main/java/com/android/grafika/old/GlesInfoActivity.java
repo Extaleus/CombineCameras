@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.old;
 
 import android.opengl.EGL14;
 import android.opengl.GLES20;
@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.app.Activity;
 
+import com.android.grafika.R;
 import com.android.grafika.combine.MainActivity;
 import com.android.grafika.combine.gles.EglCore;
 import com.android.grafika.gles.OffscreenSurface;

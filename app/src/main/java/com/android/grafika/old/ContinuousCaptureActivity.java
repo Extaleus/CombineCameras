@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.old;
 
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -35,6 +35,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.Activity;
 
+import com.android.grafika.R;
 import com.android.grafika.combine.AspectFrameLayout;
 import com.android.grafika.combine.CameraUtils;
 import com.android.grafika.combine.MainActivity;

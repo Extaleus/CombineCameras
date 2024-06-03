@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.old;
 
 import android.opengl.GLES20;
 import android.os.Bundle;
@@ -30,6 +30,7 @@ import android.widget.Spinner;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.app.Activity;
 
+import com.android.grafika.R;
 import com.android.grafika.combine.AspectFrameLayout;
 import com.android.grafika.combine.MainActivity;
 import com.android.grafika.combine.MiscUtils;

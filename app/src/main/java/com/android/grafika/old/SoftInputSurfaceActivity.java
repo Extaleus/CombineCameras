@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.old;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -28,6 +28,7 @@ import android.view.Surface;
 import android.widget.TextView;
 import android.app.Activity;
 
+import com.android.grafika.R;
 import com.android.grafika.combine.MainActivity;
 
 import java.io.File;

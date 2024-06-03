@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.grafika;
+package com.android.grafika.old;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.display.DisplayManager;
@@ -39,6 +38,8 @@ import android.view.Surface;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import com.android.grafika.R;
 
 import java.io.File;
 import java.io.IOException;
@@ -117,7 +118,7 @@ public class ScreenRecordActivity extends PlayMovieSurfaceActivity {
     });
 
     mediaProjectionManager = (MediaProjectionManager) getSystemService(
-            android.content.Context.MEDIA_PROJECTION_SERVICE);
+            MEDIA_PROJECTION_SERVICE);
 
     encoderCallback = new MediaCodec.Callback() {
       @Override
@@ -189,7 +190,7 @@ public class ScreenRecordActivity extends PlayMovieSurfaceActivity {
 
   @RequiresApi(api = Build.VERSION_CODES.M)
   private void startRecording() {
-    DisplayManager dm = (DisplayManager) getSystemService(Context.DISPLAY_SERVICE);
+    DisplayManager dm = (DisplayManager) getSystemService(DISPLAY_SERVICE);
     Display defaultDisplay;
     if (dm != null) {
       defaultDisplay = dm.getDisplay(Display.DEFAULT_DISPLAY);

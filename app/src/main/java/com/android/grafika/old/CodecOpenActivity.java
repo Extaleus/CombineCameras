@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.old;
 
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 
+import com.android.grafika.R;
 import com.android.grafika.combine.MainActivity;
 
 /**

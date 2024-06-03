@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.old;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Typeface;
 
+import com.android.grafika.R;
 import com.android.grafika.combine.MainActivity;
 
 /**

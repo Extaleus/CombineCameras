@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.grafika;
+package com.android.grafika.old;
 
 import android.opengl.GLES20;
 import android.os.AsyncTask;
@@ -30,6 +30,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 
+import com.android.grafika.R;
 import com.android.grafika.combine.MainActivity;
 import com.android.grafika.combine.WorkDialog;
 import com.android.grafika.combine.gles.EglCore;
